@@ -1,182 +1,269 @@
-\documentclass[a4paper,fleqn]{cas-dc}
-\usepackage[numbers]{natbib}
+\documentclass[12pt]{article}
 
-\usepackage{mathtools}
-\usepackage{booktabs}
-
-\usepackage{flushend}
-
-
+% --------------------
+% Basic Packages
+% --------------------
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{setspace}
 \usepackage{graphicx}
-\usepackage{algorithm}
-\usepackage{algorithmic}
 \usepackage{amsmath}
-\usepackage{amssymb}  
-\usepackage{tikz}
-\usepackage{subcaption}
+\usepackage{amssymb}
+\usepackage{booktabs} 
+\usepackage{float}    
 
-\numberwithin{equation}{section}
+\onehalfspacing
+
+% --------------------
+% Title and Author
+% --------------------
+\title{Scalable Security Architectures for Massive IoT and Wireless Networks: A Cross-Layer Framework for 6G Ecosystems}
+\author{Aditya J Shettigar}
+\date{}
 
 \begin{document}
-\let\WriteBookmarks\relax
-\def\floatpagepagefraction{1}
-\def\textpagefraction{.001}
+    \maketitle
 
-\shorttitle{Scalable Security Architectures for Massive IoT and Wireless Networks}
-\shortauthors{Shettigar A. J. et~al.}
+    \
 
-\title [mode = title]{Scalable Security Architectures for Massive IoT and Wireless Networks}                      
+    % ==========================================
+    % SECTION 1: INTRODUCTION
+    % ==========================================
+    \section{Introduction}
+    There is a revolutionary change in the field of telecommunication throughout the world, which is happening due to the implementation of MIoT technology. In previous forms of the Internet, there were two modes of communication: human-to-human or human-to-machine communication with consistent traffic flows and uniform computing endpoints. However, the current mode of communication has completely transformed from human-to-human or human-to-machine to machine-type communications. Thousands of sensors and actuators are getting deployed in our critical infrastructure on a constant basis. The implementation of MIoT technology in fields such as smart cities, power grids, and healthcare has led to a fundamental shift in the primary objective of networking design from connectivity to security \cite{11358823, healthcare}. 
 
+    Under such circumstances, a breach goes beyond digital theft. Any form of intrusion, lateral spread within the network, or data exfiltration can immediately translate into catastrophic physical harm and losses. Consider a scenario where a malicious actor breaches the security of an IoT gateway at a municipal water treatment plant and changes the dosing of chemicals. The effects are immediate. As opposed to regular gadgets that may suffer from some minor inconvenience, critical cyber-physical systems demand deterministic and secure operation. This implies that the information must flow securely against a wide variety of sophisticated cyber attacks, ranging from jamming at the physical layer of the radio spectrum \cite{namvar2016jamminginternetthingsgametheoretic}.
 
-\author[1]{Shettigar A.J.}[orcid= 0009-0009-4257-2756]
-\ead{aditya.23mic7018@vitapstudent.ac.in}
-\address[1]{School of Computer Science and Engineering, VIT-AP University, Amaravati. Andhra Pradesh, India}
+    To further compound the problem is the need for very high speeds. The next generations of 5G and 6G communications networks are intended to handle Ultra-Reliable Low Latency Communications (URLLC) applications such as tele-surgery and autonomous vehicle platoons, where the data packets need to be sent and verified on a tight schedule using the grant-free access protocols in less than a millisecond \cite{Liu2020AnalyzingGA}. How to guarantee the transmission of such fast-moving data packets and at the same time secure them without any delay in their cryptographic procedures is an enormous challenge.
 
+    It will become even more difficult considering the sheer number of devices available today and their hardware restrictions. The majority of MIoT devices work on simple microcontrollers running on coin-cell batteries or energy harvesting from the environment. They have limited working memory space and computing power. Thus, the cybersecurity techniques currently used by conventional computers are inadequate; they include persistent stateful firewall mechanisms, deep packet inspection, and sophisticated RSA-2048 encryption exchanges, among others. These procedures will quickly drain a small sensor's battery in days rather than years. Hence, the present-day model does not capture the complexity of threats facing wireless communications.
 
+    The economics behind cyberattacks have also changed. The reliance on targeted data exfiltration is outdated because there are simply too many exploitable Internet of Things (IoT) devices for cyber criminals to exploit their default credentials and vulnerable firmware, thereby creating large botnets capable of launching terabit DDoS attacks against global DNS providers and enterprise-level networks.
 
-\cortext[cor1]{Corresponding author}
+    To fight the modern-day threat, an entire overhaul of existing network security architectures needs to be done. It requires us to move away from our traditional understanding of "trusting" everything that lies inside the firewall while viewing everything coming from the internet as an inherent threat. In reality, every device should be trusted and verified constantly, meaning we need to adopt a Zero-Trust Architecture (ZTA) approach, where all traffic is segmented and authenticated.
 
-\begin{abstract}
-As more Internet of Things (IoT) devices connect to our networks, the risk of advanced cyberattacks grows. Moving into the era of 6G and "Massive IoT," traditional security methods simply can't keep up. Small edge devices don't have the battery or processing power to handle heavy encryption, and relying on a central server causes delays and creates a single point of failure—if that server is breached, the whole network is at risk.
-To solve this, we need security that is lightweight, decentralized, and easy to scale. This paper introduces a new framework combining Software-Defined Networking (SDN), Distributed Ledger Technology (DLT), and Zero-Trust principles (where no device is trusted by default). By using AI to verify devices and advanced cryptography built to resist future quantum computers, our design ensures that massive wireless networks stay fast, private, and highly secure, even in unpredictable environments.
-\end{abstract}
+    On top of that, the administration of billions of keys and access rules is not feasible manually, which means that network needs to have autonomy and be able to use artificial intelligence algorithms to monitor network activity and isolate compromised subnets without delay. Moreover, some of the work needs to be moved to the edge and implemented by IoT devices themselves.
+    
+    Given these multiple difficulties, this article presents a comprehensive framework that will take into account IoT security right from its physical radio layer up to its decentralized application layer. The synthesis of developments in such areas as lightweight cryptography, software defined networking, and distributed ledgers can go a long way in addressing IoT security.
 
-\begin{keywords}
-Massive IoT (MIoT) \sep 
-Zero-Trust Architecture \sep
-6G Wireless Networks \sep
-Lightweight Authentication \sep
-Distributed Ledger Technology (DLT) \sep
-Software-Defined Networking (SDN) \sep
-Post-Quantum Cryptography \sep
-Network Slicing \sep
-\end{keywords}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=\textwidth,height=0.35\textheight,keepaspectratio]{figures/fig1.png}
+        \caption{The Massive IoT (MIoT) ecosystem illustrating the sheer density of connected endpoints across vehicular, industrial, and smart city domains, highlighting the impossibility of traditional perimeter defense.}
+        \label{fig:intro_landscape}
+    \end{figure}
 
-\maketitle
+    % ==========================================
+    % SECTION 2: BACKGROUND AND CONCEPTUAL FOUNDATIONS
+    % ==========================================
+    \section{Background and Conceptual Foundations}
+    
+    In order to design a secure architecture, it is important to critically review the limitations encountered in the security protocols of the past in relation to their application in the IoT context. Past literature concerning security issues in IoT has largely concentrated on the examination of individual cryptography protocols without realizing that security requires an entirely cross-layer and system engineering perspective. The initial attempts to secure the IoT network have involved adapting the traditional approaches used in securing information technology (IT) networks. They have utilized the traditional hashing algorithms and PKI, which had found it difficult to adapt to  \cite{Sazib_2024_Lightweight, Chatterjee_2023_PUF}. 
 
-\section{Introduction}
-The introduction of Massive Internet of Things (MIoT) into critical sectors, such as smart cities and healthcare, has shifted the primary engineering objective from basic connectivity to extreme security \cite{11358823, healthcare}. In these environments, unauthorized access or data breaches can trigger physical and economic consequences \cite{Chatterjee_2023_PUF}. Unlike consumer-grade systems, critical applications demand secure performance, ensuring data packets are protected against attacks like radio jamming \cite{namvar2016jamminginternetthingsgametheoretic} while meeting strict time bounds for grant-free access \cite{Liu2020AnalyzingGA}. Achieving this is increasingly difficult due to the massive scale of devices and their embedded hardware limitations. Consequently, traditional security protocols are often insufficient for capturing the dynamic threat models of modern wireless networks, necessitating a fundamental redesign of architectures to guarantee operational safety.
+    In fact, the overhead involved in producing, sending, and validating digital certificates over the network of power-constrained sensors produced enormous communication challenges. In many cases, the "handshake" required for establishing the TLS connection transmitted even more data compared to the telemetry information, thus making the whole process highly inefficient. Besides that, keeping static cryptographic keys inside the non-volatile memory turned out to be a bad idea, since adversaries could simply steal a remote sensor, extract its flash memory, and retrieve the key.
 
+    Recent research has focused extensively on lightweight authentication techniques, which inherently provide increased privacy and energy savings \cite{healthcare}. Such schemes employ symmetric cryptography and advanced mathematical operations (e.g., lightweight encryption algorithms – LWC standards) to decrease the amount of CPU operations involved in processing the information. Although such software-based solutions help to minimize the energy cost, they still cannot resolve the issue with device replication. That is, if a hacker successfully duplicates the hardware and firmware of the device, the software authentication will accept the duplicated device as legitimate.
 
+    Techniques for fighting physical cloning today include physical layer authentication. Instead of utilizing cryptographic keys alone, the network starts to use physical-layer authentication where devices' hardware imperfections are used to verify the authenticity of connected gadgets. This involves the use of AI such as CNNs in the analysis of unique RF "fingerprints" of the transmitting gadget. Here, the CNN learns to detect the distortions associated with the oscillator and power amplifier of a specific sensor, thereby securing the network from spoofing attacks \cite{QIU20252025}. Regardless of whether or not an attacker gets hold of the cryptographic keys, they cannot clone the fingerprint of the original device.
 
-In order to address these challenges, this paper proposes a cross-layer design framework aimed at maximizing network security and data integrity in large-scale environments. We first optimize access control using Software-Defined Networking (SDN) to ensure robust policy management even during distributed attacks \cite{softwareiot, Al_2023_SDN_Security}. To further mitigate centralized vulnerabilities, we integrate Distributed Ledger Technologies (DLT) that dynamically secure the communication environment across thousands of nodes \cite{blockchain, Yang_2024_DAG}. At the protocol layer, we examine post-quantum cryptographic schemes that allow massive machine-type communications to remain secure against future computing threats \cite{post_quantummoura, ztiot}. Finally, to eliminate outdated trust assumptions, the architecture incorporates decentralized Zero-Trust mechanisms, ensuring that the network remains self-protecting even if individual edge components are compromised.
+        From a physical/MAC perspective, the wireless channel is intrinsically weak. There would be no need for breaking the encryption when one is capable of jamming the radio frequency channel and therefore preventing the transmission of important alerts to the gateway. Countermeasures against vulnerabilities associated with RF channels involve a more sophisticated dynamic spectrum allocation strategy. Game theory is being applied more and more in studies on adaptive jammers and the transmission behavior of Internet of Things devices to come up with intelligent channel hopping schemes \cite{namvar2016jamminginternetthingsgametheoretic}.
 
-\subsection{Research Objectives}
+    On the network level, a shift toward 5G Advanced and 6G across the globe represents significant security problems from a systems point of view. The next generation of wireless communications will have the ability to host millions of devices in one square kilometer area, specifically in massive connectivity cases and Ultra-Reliable Low Latency Communications (URLLC). It was proposed that there should be some form of analysis for security properties of 5G-AKA (Authentication and Key Agreement).
 
-The primary objective focuses on designing lightweight authentication protocols for resource-constrained devices using Physical Unclonable Functions (PUFs) and advanced neural networks. This approach optimizes the physical layer authentication using Convolutional Neural Networks (CNNs) \cite{QIU20252025} to maximize security while minimizing computational overhead in smart industrial environments \cite{Sazib_2024_Lightweight}.
+     The 5G-AKA protocol has extremely good security, but it necessitates multiple back-and-forth rounds with the device itself, serving network, and home network. However, the multi-round process is inherently contradictory to grant-free access in which the IoT device can send its data directly without waiting for its permission from the base station. Grant-free access is needed for URLLC, but using security in this type of connection results in unacceptably long latency. Many people work hard in order to reach both purposes without interfering with each other \cite{Liu_2023_FormalAnalysis, Liu2020AnalyzingGA}.
 
-The second objective is to develop and analyze 5G and 6G cellular security protocols, including network slicing and grant-free access mechanisms. The goal is to guarantee the isolation of secure data slices \cite{s25133940} and implement Authentication and Acknowledgement (AA) approaches \cite{V2024101669} without compromising the performance of massive sensor deployments \cite{Liu_2023_FormalAnalysis}.
+    In addition to that, the emergence of 5G brought with itself a technology known as network slicing, which allows the creation of multiple virtual networks using a common physical layer. Though critical traffic related to healthcare can be isolated virtually from general consumer traffic, the security of the network slices poses some unique attack surfaces. In case the management of the virtual network slices becomes vulnerable to malicious attacks, it would be possible for attackers to move from the low-security slice of smart meters straight into the highly secured slice of industrial controls \cite{s25133940}.
 
-The third objective is the integration of Software-Defined Networking (SDN) and Zero-Trust frameworks into the wireless IoT architecture to enhance access control and isolate network threats \cite{softwareiot}. By dynamically configuring security policies at the software level, the system aims to apply quantum-resistant Zero-Trust principles \cite{ztiot} to ensure secure connections for large-scale IoT networks \cite{Al_2023_SDN_Security}.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=\textwidth,height=0.45\textheight,keepaspectratio]{figures/fig2.png} 
+        \caption{The cross-layer security paradigm: Moving from purely software-based cryptography (Application Layer) to hardware-intrinsic RF Fingerprinting (Physical Layer) and Slice Isolation (Network Layer).}
+        \label{fig:cross_layer_foundations}
+    \end{figure}
 
-The fourth objective is to design a decentralized security architecture based on Distributed Ledger Technologies (DLT) and Directed Acyclic Graphs (DAG) to enhance data integrity \cite{Yang_2024_DAG}. This aims to eliminate single points of failure associated with centralized authorities by distributing trust and cryptographic functions across industrial IoT networks \cite{blockchain}.
+    % ==========================================
+    % SECTION 3: CORE CONCEPTS AND APPROACHES
+    % ==========================================
+    \section{Core Concepts and Approaches}
+    
+    Considering these intrinsic weaknesses and limitations of the legacy infrastructure, it is necessary to devise a holistic and multi-tier strategy that will provide for absolute cybersecurity and tamperproof integrity of data. The solution to be considered does away with the conventional paradigm of using a monolithic, perimeter-based defense. On the contrary, it promotes agility, decentralization, and intelligence in designing a system that is premised on the fact that a network has already been compromised internally.
 
-The final objective is to define and implement forward-looking security measures, such as quantum-empowered learning and semantic-aware security protocols \cite{Zhou_2025_SemanticSec}. These advanced models validate the proposed architectures against future threats, ensuring they meet the rapid deployment demands of next-gen critical IoT applications \cite{JAVEED2024577, s19112484}.
+   In the first place, this research will extensively utilize SDN technology to create a complete separation between the control plane and data forwarding plane of the network infrastructure. While in conventional networking, each router makes routing decisions based on local tables, in an SDN setting, there is a centralized or logically centralized controller with knowledge about the entire network topology. This facilitates the optimization of access policies in real time. For instance, if an IDS identifies a specific IoT node as compromised, the SDN controller is capable of applying a policy in the nearest edge switch that will drop all packets coming from this node \cite{softwareiot, Al_2023_SDN_Security}.
 
-\section{Literature Survey}
+    However, this dependence on the SDN controller brings up another crucial contradiction: this very system, intended to ensure safety, turns out to be a Single Point of Failure (SPOF). In case of successful attacks on the SDN controller by an attacker, whether via DDoS or other methods that exploit vulnerabilities in its control functions, the entire network fails. In order to increase the level of protection from this vulnerability of SDN systems, this project uses Distributed Ledger Technologies (DLTs). Instead of using only one centralized database of access rules, DLTs ensure the decentralization of the "truth." Thanks to efficient consensus algorithms, DLTs will manage the identification of devices and secure communication environments within thousands of distributed nodes \cite{blockchain, Yang_2024_DAG}.
 
-Existing literature on IoT security predominantly examines individual cryptographic protocols in isolation rather than adopting a cross-layer strategy. Early attempts to secure IoT relied heavily on traditional hash-based methods; however, these approaches struggle to adapt to the limited power constraints of healthcare devices and smart cities \cite{Sazib_2024_Lightweight, Chatterjee_2023_PUF}. To address these limitations, recent research has shifted toward lightweight authentication schemes that inherently maximize privacy and energy efficiency \cite{healthcare}. Furthermore, modern systems are integrating AI-driven physical layer authentication using CNNs to better handle spoofing attacks \cite{QIU20252025}, while also addressing fundamental wireless vulnerabilities such as malicious jamming from a game-theoretic perspective \cite{namvar2016jamminginternetthingsgametheoretic}.
+     Standard architectures of blockchain networks (Bitcoin or Ethereum, for example) operate too slowly and have a huge computational cost, which makes them impractical for MIoT. This architecture uses DLTs based on Directed Acyclic Graph (DAG). They do not divide transactions into sequential blocks, but each new transaction should cryptographically confirm previously recorded transactions. This enables asynchronous processing of transactions in the network, which leads to incredibly high throughput and low latency.
 
-At the network layers, the evolution toward 5G and 6G presents a significant security bottleneck, particularly when managing massive connectivity and Ultra-Reliable Low-Latency Communication (URLLC). Recent studies propose formal security analyses of 5G-AKA protocols and grant-free access techniques to balance security requirements without sacrificing rapid transmission \cite{Liu_2023_FormalAnalysis, Liu2020AnalyzingGA}. Similarly, network segmentation is being implemented to logically separate traffic, thereby improving isolation and security \cite{s25133940}. Although cutting shows promise, dynamically configuring these partitions to meet the strict security limits of 6G remains a complex challenge that requires sophisticated Authentication and Acknowledgment (AA) strategies \cite{V2024101669, 11358823}.
+    In the process of designing a protocol layer solution, there is an element that cannot be overlooked. With quantum computing looming on the horizon as a real threat to the mathematical principles underpinning today’s public-key cryptography algorithms (such as RSA and ECC), employing Shor’s Algorithm to break down prime factors at an exponential speed compared to classical computing, we consider post-quantum cryptographic (PQC) methods. This means integrating lattice-based and hash-based schemes for securing machine-type traffic against the possible threats of future computing, nullifying the current tactic of “harvest now, decrypt later” used by advanced persistent threat (APT) groups \cite{post_quantummoura, ztiot}.
 
-To manage these complex networks, Software-Defined Networking (SDN) is being used to centralize security policy enforcement and overcome rigid hardware limitations \cite{softwareiot}, though securing the SDN controllers themselves requires further exploration \cite{Al_2023_SDN_Security}. Security architectures face similar trade-offs; standard deployments are vulnerable to rapid exploitation, requiring architectures that can be rapidly deployed with built-in data security \cite{s19112484}. Finally, traditional cryptographic metrics fail to capture the upcoming threat of quantum computing, highlighting the urgent need for a unified framework that integrates post-quantum cryptography \cite{post_quantummoura} and quantum-resistant Zero-Trust frameworks \cite{ztiot}.
+    Finally, the architecture is entirely built to accommodate Zero-Trust (ZT) solutions. With the Zero-Trust architecture model, there is no implicit trust given to devices, users, or applications based on their geographical or network locations. Access requests must be verified all the time in order to ensure the elimination of traditional assumptions. Even when an adversary tries to connect physically to an internal and secure switch, they are going to fail because they need to authenticate themselves, prove device integrity, and contextual authorization.
 
-Finally, the architectural focus is moving from centralized management to decentralized resilience. Centralized security creates single points of failure, prompting the adoption of Distributed Ledger Technology (DLT) and blockchains to distribute trust across industrial networks \cite{blockchain}. To support this in low-latency environments, DAG-based ledgers are being explored to process transactions faster than traditional blockchains \cite{Yang_2024_DAG}. However, validating these systems requires new approaches; traditional machine learning compromises data privacy, leading to the rise of quantum-empowered federated learning \cite{JAVEED2024577}. Consequently, there is an urgent need for semantic-aware security architectures that account for both the meaning of the transmitted data and the massive scale of 6G networks \cite{Zhou_2025_SemanticSec}.
+    First and foremost, the aim here is to build a mixed, light authentication method for low-power embedded systems based on PUFs and artificial intelligence algorithms. In this regard, PUFs help create an immutable physical root of trust which means that the fingerprint created for each physical node by virtue of silicon variability can never be replicated. In this way, the device remains authentic. Together with light learning mechanisms, the device can prove its authenticity in continuous manner without exhausting its power reserves.
 
-\subsection{Table for Literature Survey}
-Table \ref{tab:literature_summary} summarizes the key research contributions related to scalable security architectures in Massive IoT. It highlights the shift from traditional centralized security designs to dynamic, decentralized systems. Early approaches focused on simple lightweight authentication, but recent works utilize advanced techniques like Software-Defined Networking (SDN) for access control and Distributed Ledger Technology (DLT) for trust distribution. While these modern methods resolve critical issues like single points of failure and quantum vulnerability, they often introduce new challenges regarding computational complexity and dynamic management overhead. The table compares these proposed methods, the specific techniques employed, the problems they solve, and their existing limitations.
+      Other critical objectives that must be accomplished during the course of this project are delving deep into the convergence between next-generation 5G/6G wireless technologies' security architecture (particularly dynamic network slicing in real time), integration between SDN and the zero-trust model, use of distributed ledger technology with DAG structures to avoid failures in the network, and finally quantum-based semantic-enabled federated learning frameworks which would enable edge nodes to jointly learn threat detection algorithms without ever exchanging sensitive data payloads.
 
-\begin{table*}[width=.9\textwidth,cols=5,pos=h]
-\caption{Comparison of Scalable Security Architecture Approaches}
-\label{tab:literature_summary}
-\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} p{0.15\textwidth} p{0.2\textwidth} p{0.2\textwidth} p{0.2\textwidth} p{0.2\textwidth} }
-\toprule
-\textbf{Ref.} & \textbf{Method Proposed} & \textbf{Techniques Used} & \textbf{Issues Resolved} & \textbf{Limitation} \\
-\midrule
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=\textwidth,height=0.45\textheight,keepaspectratio]{figures/fig3.png}
+        \caption{The holistic Scalable Security Architecture: Orchestrating SDN controllers, DAG ledgers, and edge-native PUF authentication under a unified Zero-Trust umbrella.}
+        \label{fig:core_architecture}
+    \end{figure}
 
-\cite{Sazib_2024_Lightweight} & 
-Lightweight Mutual Auth & 
-Hash-based Protocols & 
-High overhead in traditional security methods & 
-Vulnerable to future quantum computing attacks. \\
-\addlinespace
+    % ==========================================
+    % SECTION 4: COMPARATIVE DISCUSSION
+    % ==========================================
+    \section{Comparative Discussion}
+    
+    The evolution of scalable security architectures for Massive IoT represents a continuous, high-stakes struggle to balance computational overhead with cryptographic resilience, a challenge that has become the definitive engineering frontier of the 6G era. The important, seminal research works concerning scalable security architectures for Massive IoT are rigorously analyzed and presented in Table \ref{tab:literature_summary}. A comprehensive review of this literature indicates a definitive, industry-wide transition from classical, central security architectures to highly dynamic, decentralized, and edge-native distributed models. This shift was necessitated by the realization that the sheer scale of the IoT—predicted to encompass billions of interconnected endpoints—renders any centralized authentication or monitoring authority a catastrophic bottleneck and a prime target for systemic compromise.
 
-\cite{Al_2023_SDN_Security} & 
-SDN-Based Zero Trust & 
-Software-Defined Networking & 
-Rigid access control in large-scale networks & 
-SDN controller becomes a high-value attack target. \\
-\addlinespace
+The first few works that gained prominence in the early 2010s were largely centered around the efforts of optimizing conventional authentication techniques on the platform of severely restricted hardware resources. In such a setting, the academic community had put in significant effort towards the technique of lightweight authentication, where they attempted to reduce heavyweight hashing functions such as SHA-256 to a more manageable form that could be executed on simple 8-bit or 16-bit microcontrollers. Although the technique succeeded initially in achieving its goals of reduced energy requirements and increased operational lifespan of sensors, it failed miserably when put against the challenges of hardware-based attacks. The adversaries managed to overcome software protection through techniques such as hardware spoofing, power attacks, and advanced forms of replay attacks that took advantage of the lack of a root of trust. It was soon understood by the academic community that software-only security on inherently vulnerable hardware would never suffice.
 
-\cite{Yang_2024_DAG} & 
-DAG-Based Ledger & 
-Distributed Ledger Technology & 
-Single point of failure in centralized servers & 
-High memory requirements for individual edge nodes. \\
-\addlinespace
+Modern day research focuses on far more advanced models based on cross-layer security integration, ranging from physical layer all the way to cloud orchestration. In literature, the use of SDN is strongly advocated as a solution to manage dynamic access control which was never possible with static route tables in the past. Through the programmability of networks, it has become possible to instantly contain compromised IoT swarms before they get a chance to launch volumetric DDoS attacks. Since a programmable network offers a "fluid perimeter" where SDN controllers can reprogram flow rules in real-time to isolate a suspicious device while leaving other nodes untouched, this approach is being considered very promising. In addition, leveraging DLT to establish decentralized trust through distributed ledgers has received a huge response to eliminate the centralized "God mode" associated with conventional databases. Through storing devices' identities, firmware versions and access logs on an immutable ledger, such architectures eliminate all possibilities of tampering with audit trails or compromising centralized authentication servers, thus establishing an absolute "truth" distributed throughout all fabric nodes.
 
-\cite{JAVEED2024577} & 
-Quantum Federated Learning & 
-Federated Learning \& 6G & 
-Data privacy leaks during centralized AI training & 
-Complex synchronization across massive global nodes. \\
-\addlinespace
+While they have been able to tackle very challenging issues, such as SPOFs and algorithm design for resisting quantum attacks, new problems are introduced, which are extremely difficult to solve regarding cost of computation and dynamics. The introduction of DAG ledgers to battery-operated IoT nodes poses huge concerns on memory bloat; an edge device cannot store all the ledger data, hence requiring novel pruning strategies and lightweight node mechanisms that also achieve high-security standards. When the blockchain network shifts into the post-quantum era, the computing task becomes even harder. New cryptographic systems based on lattices and other forms of quantum-resistant signatures use larger key sizes and perform more mathematical calculations compared to ECC, putting pressure on the energy limits of coin-cell-powered devices. This gives rise to a novel "Security Trilemma," whereby developers face tough decisions when designing a system that is secure, fast, and energy-efficient at the same time.
 
-\cite{s25133940} & 
-5G Slicing Security & 
-Network Slicing & 
-Resource contention and lack of traffic isolation & 
-Dynamic slice management overhead under high load. \\
-\addlinespace
+The latest research literature seems to indicate that the future lies solely in "Hardware-Intrinsic Security", which would mean using Physical Unclonable Functions (PUFs) to create cryptographic keys using the natural variations of the silicon manufacturing process. The synthesis of the two – physical fingerprinting and decentralization in the context of software-defined network orchestration – makes it possible to reach a Zero Trust posture wherein all packets are signed by both their digital signature as well as their physical signature derived from their point of origin's hardware. This synthesis remains the cutting edge of research, albeit one that necessitates a high degree of coordination on the part of hardware manufactures and network designers that has yet to be reached through standardization. The logistical problems presented by having to manage the millions of such dynamic and decentralized identities will necessitate an automation process driven by AI to monitor the DLT and SDN layers for any anomalous behavior beyond the ability of human analysts to detect.
 
-\cite{QIU20252025} & 
-Physical Layer Authentication & 
-Lightweight CNNs & 
-Spoofing attacks in wireless communication channels & 
-Training requires massive amounts of clean channel data. \\
+    \begin{table}[H]
+        \centering
+        \caption{Comparison of Scalable Security Architecture Approaches and Limitations}
+        \label{tab:literature_summary}
+        \resizebox{\textwidth}{!}{%
+        \begin{tabular}{p{0.15\textwidth} p{0.25\textwidth} p{0.2\textwidth} p{0.2\textwidth} p{0.2\textwidth}}
+        \toprule
+        \textbf{Ref.} & \textbf{Method Proposed} & \textbf{Techniques Used} & \textbf{Issues Resolved} & \textbf{Limitation} \\
+        \midrule
+        \cite{Sazib_2024_Lightweight} & Lightweight Mutual Auth & Hash-based Protocols & High overhead in security & Vulnerable to quantum attacks. \\
+        \cite{Al_2023_SDN_Security} & SDN-Based Zero Trust & SDN & Rigid access control & SDN controller is a target. \\
+        \cite{Yang_2024_DAG} & DAG-Based Ledger & DLT & Single point of failure & High memory requirements. \\
+        \cite{JAVEED2024577} & Quantum Federated Learning & Federated Learning \& 6G & Data privacy leaks & Complex synchronization. \\
+        \cite{s25133940} & 5G Slicing Security & Network Slicing & Lack of traffic isolation & Dynamic slice management load. \\
+        \cite{QIU20252025} & Physical Layer Authentication & Lightweight CNNs & Spoofing attacks & Training requires massive data. \\
+        \bottomrule
+        \end{tabular}%
+        }
+    \end{table}
 
-\bottomrule
-\end{tabular*}
-\end{table*}
+    Moreover, managing the dynamic flow tables of an SDN at scale, involving millions of highly mobile 6G endpoints prone to disconnections, would need highly advanced predictive AI models in order to keep the management process from bringing down the whole network. This is explained in a work by Javeed et al. \cite{JAVEED2024577} where they pointed out how federated learning solved the data privacy problem of sending raw data to the edge device but generated huge communication overhead due to transmitting complex gradient updates to the global aggregator.
 
-\subsection{Research Gaps}
-Despite significant advancements in IoT security, several critical gaps remain in the existing literature. First, while lightweight authentication techniques have been developed for edge devices, they largely fail to incorporate post-quantum cryptography, leaving networks vulnerable to future threats \cite{Sazib_2024_Lightweight, post_quantummoura}. Second, at the architectural layer, SDN provides excellent flexibility for Zero-Trust policies \cite{Al_2023_SDN_Security}, but centralized controllers remain a vulnerability bottleneck. Third, although Distributed Ledgers (DLTs) show promise for decentralizing trust, executing them efficiently on battery-powered nodes without massive latency spikes remains largely unexplored \cite{blockchain, Yang_2024_DAG}. Furthermore, securing grant-free access for URLLC traffic is difficult when combined with the complex security handshakes of 5G-AKA \cite{Liu2020AnalyzingGA, Liu_2023_FormalAnalysis}. Finally, merging 6G semantic-aware security \cite{Zhou_2025_SemanticSec} with advanced federated learning models \cite{JAVEED2024577} lacks a unified testing framework for massive industrial deployments.
+    The move towards network slicing within 5G networks, as discussed by Dias et al. \cite{s25133940}, brings about its own tradeoffs. Network slicing offers the promise of isolation, although in reality, the slices share common resources within the physical network. Any resource exhaustion attack executed by a potential attacker in one slice can inadvertently bring down performance within another slice that may be executing URLLC applications. Maintaining absolute mathematical hard isolation of each slice without losing the multiplexing benefits of the common network remains an unsolved issue.
 
-\subsection{Motivation}
-The transition of IoT from simple sensor networks to massive, critical infrastructure—such as smart healthcare, autonomous transportation, and industrial automation—necessitates a fundamental shift in security design. In these Massive IoT (MIoT) domains, the cost of a cyberattack is measured not just in data loss, but in physical safety and operational collapse \cite{healthcare, Chatterjee_2023_PUF}. Current heavy cryptographic models are insufficient for edge devices plagued by low processing power and battery constraints. There is an urgent need for a system that does not merely react to breaches but proactively prevents them through decentralized, lightweight design. The motivation for this research stems from the requirement to bridge the gap between heavy, traditional IT security and the harsh reality of resource-constrained IoT deployments. By creating a unified framework that addresses lightweight authentication, SDN-based access control, and post-quantum resilience simultaneously, we aim to enable highly secure, next-generation wireless networks.
+    Through these comparative analyses, we can conclude that there is no one solution. For scalable IoT security in the future, an intelligent orchestration of the technologies will prevail.
 
-\subsection{Problem Statement}
-The core problem addressed in this study is the inability of current security architectures to scale efficiently and protect massive IoT deployments against advanced cyber threats. Specifically, this research tackles four distinct sub-problems. First, traditional authentication protocols are too computationally heavy for edge devices, yet lightweight alternatives are vulnerable to spoofing and quantum attacks \cite{QIU20252025, post_quantummoura}. Second, reliance on centralized security servers creates vulnerability bottlenecks, where a single successful attack can compromise the entire network \cite{Al_2023_SDN_Security}. Third, the wireless medium is highly susceptible to physical layer attacks, such as jamming, which disrupt critical low-latency communications \cite{namvar2016jamminginternetthingsgametheoretic, V2024101669}. Fourth, maintaining data privacy while training network intelligence models is difficult without exposing sensitive information. This research seeks to formulate a comprehensive solution that optimizes protocol lightness, decentralizes trust using DAGs, and hardens the physical layer to ensure data integrity despite these adversarial conditions.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=\textwidth,height=0.35\textheight,keepaspectratio]{figures/fig4.png}
+        \caption{The Security Trilemma in Massive IoT: Navigating the complex trade-offs between Edge Computational Overhead, Cryptographic Resilience, and Network Latency across different proposed methodologies.}
+        \label{fig:comparative_tradeoffs}
+    \end{figure}
 
-\section{Conclusion}
+    % ==========================================
+    % SECTION 5: PRACTICAL INSIGHTS AND USE CASES
+    % ==========================================
+    \section{Practical Insights and Use Cases}
+    
+Think about the strict standards required of Internet of Medical Things (IoMT) and modern connected healthcare organizations. At a modern hospital where patients are monitored by WiFi-connected pacemakers, infusion pumps, MRI machines, and telemetry arrays for remotely monitoring the patient, network security is linked to patient well-being in real-time. The medical equipment at these hospitals is usually designed with custom real-time operating systems (RTOS) that cannot be easily fixed or updated with current endpoint detection tools and is extremely vulnerable to attack through the network. A false alarm produced by the black box IDS would automatically initiate a quarantined process within an essential subnet, which would cut off an essential monitoring array from a nursing station's monitoring system. On the contrary, a false-negative alert would let a threat agent manipulate device dosages, route tables for capturing diagnostic data or stealing Protected Health Information (PHI), causing major HIPAA breaches, significant penalties, and deadly consequences.\cite{judith2023efficient}
 
-Scalable Security Architectures are essential for the safe deployment of the next generation of wireless Massive IoT. By shifting the design focus from heavy, centralized firewalls to lightweight, decentralized Zero-Trust frameworks, we can support critical applications where a security breach is not an option. Our research demonstrates that through a combination of Software-Defined Networking, Distributed Ledger Technology, and AI-driven physical layer authentication, wireless networks can achieve robust protection without sacrificing latency or battery life. 
+With XAI embedded into the process, clinicians receive instant and comprehensible contextualization that fundamentally changes the incident-response flowchart. In place of a simple “Alert: Blocked IP,” the algorithm delivers a fully understandable description: “Alert triggered: Unusual data packet size and an unexpected port request originating from the Infusion Pump IP address 192.168.1.45, directed at an external subnet, where payload variation accounted for 82\% of the abnormality.” In this manner, the clinical security officers can make their decisions on whether to isolate the network or keep treatment flowing based on fully understandable criteria that prioritize human lives over machine-driven actions \cite{judith2023efficient}. Moreover, this process is instrumental for further forensic analysis. Once hospital management needs to defend their decision of isolating a network segment from a compliance auditor, the XAI-generated feature attribution logs provide undeniable mathematical evidence of the nature of the threat, protecting the hospital from any claims of interfering with critical clinical procedures.
 
-Future work will involve integrating quantum-resistant cryptographic algorithms and 6G-enabled semantic-aware security features to further harden these networks against extreme cyber volatility. As networks scale to billions of connected devices, maintaining this balance between efficiency and unbreakable security will be the defining challenge of the next decade of telecommunications research.
+There is a similar need for action in the realm of IIoT and critical infrastructure systems, as these too require their own urgent security considerations. Systems involving power grids, water management plants, and automated manufacturing processes rely heavily on SCADA devices that use old-style serial protocols such as Modbus, DNP3, or PROFINET, but with the added layer of IoT and TCP/IP capabilities required to analyze cloud-based information. In these cases, however, because the security protocol used involves the Purdue Enterprise Reference Architecture, crossing the air gap between Level 3 (Operations) and Level 0 (Physical Process) creates tremendous weaknesses. The result of an unnoticed intrusion could mean massive physical destruction, the devastation of equipment, or wide-scale utility loss impacting hundreds of thousands of people. Attackers working within these types of systems do more than steal information from the database. They control programmable logic controllers and exceed the machine's ability to function safely while simultaneously sending false telemetry data to the operators.
 
-\section*{Declarations}
-\subsection*{Ethical Approval}
-This manuscript reports studies that do not involve human participants, human data, human tissue, or animals.
+Security officers working under these circumstances are put through extreme mental and operational stress. Without an awareness of the logic used behind continuous alerts, "alert fatigue" kicks in immediately. As a matter of fact, a typical industrial SOC will see IDS issuing thousands of alerts of dubious quality on any given shift. As analysts develop reflexes towards automatically ignoring bulk-closing alerts that have no apparent basis, inevitable consequences arise. These include a failure to address the true sophisticated nation-state-level threat such as Stuxnet or Triton malware in the midst of countless other useless alerts. The introduction of explanations produced using LIME helps to counteract "alert fatigue" in the most straightforward way possible – by showing analysts the precise physical process variables – such as sudden increase in pressure values or a set of unusual write-commands to a specific holding register – that led to an alert in question. The analyst will be able to use this information to verify the AI reasoning in a couple seconds, significantly decreasing MTTR time.
 
-\subsection*{Conflict of Interest}
-The authors have no conflict of interest to declare that are relevant to the content of this article.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=\textwidth,height=0.35\textheight,keepaspectratio]{figures/fig5.png}
+        \caption{Deployment schematics of the proposed XAI framework across diverse high-stakes verticals: Healthcare (IoMT), Industrial Automation (IIoT), and Smart City infrastructure, highlighting the flow from edge sensors to centralized SOC dashboards.}
+        \label{fig:usecase_deployments}
+    \end{figure}
 
-\subsection*{Authors' Contributions}
-Shettigar A.J. contributed to the conceptualization, Formal analysis, drafting the original manuscript, and designing the experimental protocols. Shettigar was also responsible for Conceptualization, methodology, software implementation, and dataset curation. Shettigar contributed to conceptualization, supervision, and in-depth analysis of the experimental results. Shettigar handled the review and editing of the final draft, as well as the overall validation of the study results.
+    In addition, the demand for AI that can be explained has now shifted from being an attractive technical capability to being a mandatory and rigid legal requirement. This is because regulatory bodies around the world are now making it compulsory to ensure algorithmic transparency for safeguarding consumer and national security interests. More importantly, the right to an explanation of the automated decision making process that affects any individual is stipulated under Article 22 of the General Data Protection Regulation by the European Union. In other words, when an automated IDS restricts the usage of an individual, the organization should be able to provide explanations for the algorithmic decision.
 
+    Likewise, the imminent EU AI Act, which imposes strict rules, classifies critical infrastructure AI as “high risk,” mandating thorough documentation, extensive human supervision, and complete transparency. Businesses employing hidden or black box approaches for security purposes can be heavily penalized with hefty fines and damage to reputation due to non-compliance with regulations. A system built on SHAP and LIME by design provides an infallible audit trail for documenting and validating anomaly detection algorithms. Compliance with laws is thus ensured while earning confidence from both insurance companies and the general public regarding automated cyber security \cite{zolanvari2021transparent}.
 
-\subsection*{Funding}
-The author did not receive financial support from any organization for the submitted work.
+    % ==========================================
+    % SECTION 6: CHALLENGES AND OPEN ISSUES
+    % ==========================================
+    \section{Challenges and Open Issues}
+    
+   Though the adoption of state-of-the-art spatio-temporal neural networks, combined with state-of-the-art explainable AI modules, marks a giant leap in the theory of cybersecurity, implementing such an architecture and bringing it to perfection in terms of its operation poses serious problems. In academic studies, much work has been done in the laboratory setting, but very few efforts have been made to uncover vulnerabilities and tackle them in a noisy and unpredictable reality of actual usage. From the transition from prototype to an industry-standard solution there are a number of factors at play that are related not only to hardware but also to mathematics involved in post-hoc explanations.
 
-\subsection*{Availability of data and materials}
-Data sharing is not applicable to this article, as no new data were created or analyzed in this study.
+Perhaps one of the most important among these is the extremely high computation cost and latency involved in producing high-fidelity XAI explanations within tightly constrained computational devices. The computationally intensive nature of the calculations necessary to derive accurate Shapley values (which is factorially proportional to the number of input variables, $O(2^N)$) and constantly training local LIME models makes for an incredibly resource-intensive process. Within the case of SHAP explanations, the need to consider all feature combination possibilities to ensure impartiality adds complexity that might overwhelm even powerful CPUs. Even with kernel approximation methods and sample-based calculations, the demand for memory bandwidth may exceed the capacity of edge-computing devices.
 
-\subsection*{Acknowledgment}
-We acknowledge that the hardware utilized in this research for evaluation is a part of the Intel IoT Center for Excellence, VIT-AP University. 
+As these algorithms are deployed on the regular IoT edge computing devices like a home router, IoT gateways operating in low energy environment, or ARM Cortex-M microcontrollers powered by batteries, the latency created by the explanation engine can cause considerable delay in executing the automated response to the malicious activity. With high stakes at hand in the situation where the attack comes from an automated worm or a novel strain of ransomware, the security protocol needs to execute at line-rate speed. Just a fraction of time, measured in milliseconds that it takes for the system to create an explanation can cause the complete loss of control of the entire network due to lack of time to contain just one of the affected devices. "Security vs. Interpretability" dilemma arises here as a result: either the system response to the threat will be delayed, and therefore ineffective, or the explanation process will be skipped resulting in going back to an insecure black-box again. How these explainers could be optimized for edge deployment remains an important challenge \cite{ijcrt2025threat, chen2022explainable}.
 
-\bibliographystyle{cas-model2-names}
-\bibliography{references}
+Also, the intrinsic resilience and essential security of the algorithms used for explaining AI models pose another important problem that remains largely unresolved. The fast-developing branch of adversarial machine learning has unequivocally proven that the XAI solutions are not invulnerable; instead, they constitute a brand-new, additional attack surface for the adversary to utilize. While the interpretability layer is the window through which one observes the workings of the AI model, a vulnerable explainer is like a prism that warps the reality for the sake of the attacker's purpose.
 
+A capable adversary can produce adversarial perturbations—the tiny amounts of mathematically optimized noise (for example, FGSM or PGD attacks) in network traffic payload—which would help to fool the primary deep learning classifier while forcing the XAI component to generate convincing yet utterly misleading interpretations. Thus, the adversary employs the interpretability layer to deceive the analyst into seeing something that he or she cannot actually see—a technique known as "explanation washing" or "scaffolding" in the academic literature. This insidious tactic effectively blinds the security analyst, creating a false sense of security by weaponizing the interpretability layer itself against the network defender—an attack vector increasingly referred to in the literature as "explanation washing" or "scaffolding." In such a scenario, the XAI might justify a malicious data exfiltration event as a "routine firmware heartbeat" or "benign encrypted synchronization," leading the analyst to manually whitelist an active breach. Securing the explainer algorithm from adversarial mathematical manipulation and ensuring that the explanation remains consistent with the model’s true underlying behavior under stress is paramount to establishing true trust \cite{ieee2024limeshap, nguyen2022explainable}.
+
+In addition to this, the absence of a quantitative measure for the quality of explanation hinders the systematic hardening of such systems. Existing evaluations involve either qualitative analysis or limited-size user studies. The absence of a quantitative measure of "fidelity under attack" or "stability of interpretation" means that it is impossible for security engineers to verify the security of their system with respect to attacks by non-stationary noise or polymorphic malware. Due to the absence of a certification process for XAI, such a system may be better but due to lack of proof, it would not be possible to get insurance or validation for using such a system in sensitive fields such as nuclear power or autonomous air travel.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=\textwidth,height=0.35\textheight,keepaspectratio]{figures/fig6.png}
+        \caption{Visualization of adversarial ML perturbations successfully manipulating both the underlying DL classifier output and the resulting LIME explanation decision boundaries, illustrating the danger of "Explanation Washing."}
+        \label{fig:xai_vulnerabilities}
+    \end{figure}
+
+    Thirdly, the scientific community is currently experiencing a severe lack of standardized, mathematically quantified metrics to gauge the overall “quality” of an explanation. At the moment, there are no widely accepted, mathematically sound benchmarking techniques for determining the “fidelity” (the accuracy with which the simple explanation reflects the true complex behavior of the deep system), “robustness” (the degree of consistency that the explanation maintains when subjected to slight changes within benign data samples), or “comprehensibility” (the ease and efficiency with which the human operator is able to interpret and utilize the output of the explanation during real-time threat detection) of an explanation. Without the universal adoption of such standards, any comparative evaluation of the operational performance of competing IDS explainability systems will remain fundamentally flawed and scientifically incomplete \cite{frontiers2025ids, jes2024iot}.
+
+    % ==========================================
+    % SECTION 7: FUTURE DIRECTIONS
+    % ==========================================
+    \section{Future Directions}
+    
+    The future evolution of the explainable intrusion detection system must be fast-paced and wide-ranging, taking into account the numerous weak spots, potential attackers, and the practical physical scalability concerns that exist in today’s technology environment.
+
+    First of all, one of the most important aspects of future studies in this field should be concerned with the combination of Federated Learning with Explainable AI techniques. The emergence of massive networks of Internet of Things (IoT) devices, which will cover smart cities, autonomous car networks, as well as international logistics, renders the use of the existing approach to model training impossible both in practice and in accordance with the legal requirements (e.g., GDPR and CCPA).
+    
+    Federated learning resolves this issue through enabling edge nodes to perform local training of intrustion detection models based on their private data and communicating only the encrypted parameter gradients—rather than their network traffic—with the cloud aggregator using federated differential privacy. It is imperative to devise "Federated XAI" methods capable of generating global and meaningful features, and SHAP values based entirely on federated, encrypted gradients. This ensures network defenders have full visibility and threat intelligence sharing capabilities without compromising any personal privacy nor clogging core network bandwidth \cite{nguyen2022explainable, ijcrt2025threat}.
+
+    In addition, since the cryptographic world is now moving towards preparing itself for the emergence of quantum computers capable of breaking current encryption systems, it becomes necessary for any future IoT system security architecture to consider the transition to Post-Quantum Cryptography (PQC). In fact, quantum algorithms like the famous Shor's algorithm make breaking the discrete logarithms and integer factorizations that are used in cryptography easy.
+    
+    PQC using standards from NIST, which include lattice cryptography like CRYSTALS-Kyber and CRYSTALS-Dilithium, would change the characteristics of traffic in IoT networks in several ways. There will be added encryption overhead, bigger keys, fragmented packets with new features, and different latency. Future explainable models of deep learning would have to be completely redesigned to accommodate the unique temporal and spatial signatures of PQC communication traffic to ensure that the XAI modules would not erroneously interpret the traffic as volumetric attacks, anomaly traffic, or data exfiltration attempts. Security of the communications channel between the vulnerable edge devices and the centralized XAI engine that uses PQC will be a primary goal going forward.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=\textwidth,height=0.35\textheight,keepaspectratio]{figures/fig7.png}
+        \caption{Future architectural roadmap illustrating the necessary integration of privacy-preserving Federated Learning parameter updates and Post-Quantum Cryptographic secure communication channels.}
+        \label{fig:future_federated}
+    \end{figure}
+
+    Explainable Intrusion Detection should not be confined to the present-day post-hoc feature attribution but rather adopt an adversarial rationale to proactively adapt its capabilities. Even though today’s approaches do provide some insight into what factors caused a particular machine learning classifier to generate a certain alert, it does not provide actionable recommendations for building immunity against any minor variations of that particular attack. Thus, counterfactuals are set to become the next level of operational resilience within Massive IoT and 6G environments.
+
+Counter factual aim to answer the questions posed by machine learning applications regarding the potential scenarios in which different outcomes would manifest themselves. If we refer to our deep learning-based Intrusion Detection System as an example, instead of simply attributing an attack alert to a number of specific features, the counterfactual would aim to solve the optimization task of minimizing the distance between the malicious input vector x and x′, so that f(x′)=Benign.
+
+In this manner, the IDS can uncover the "blind spots" or "narrow margins" of the classifier. When a packet's inter-arrival time needs to be altered by just 2 milliseconds in order to evade detection, the counterfactual explanation shows how vulnerable the model is to even slight changes in temporal features. Armed with this information, the IDS is transformed from a mere detector into an intelligence agent, offering mathematical insight into the process of evasion employed by the attacker.
+Actionable Defensive Strategy
+
+With the information provided by the intelligence in the form of counterfactual explanations, security analysts and SOAR systems can implement precise defenses against threats. Rather than deploying broad-based, imprecise firewall rules that might lead to high false-positive rates, security analysts are armed with deterministic data that enables them to write highly specific rules for their firewalls. As an example, if the analysis identifies payload entropy as the critical factor in defeating the filter, then a specific firewall rule can be implemented to analyze high-entropy payloads more carefully.
+
+In addition, such a method helps automate red-teaming efforts by generating “evasive” versions of known malware with counterfactuals. Security personnel can thereby continuously test their models in an iterative process, making sure the defensive capabilities do not rely on minimal modification strategies used by attackers \cite{frontiers2025ids}.
+The Synthesis of LLMs and XAI: Frictionless Human-Machine Teaming
+
+Lastly, the implementation of the proposed architecture will be completed by the use of LLMs that serve as an interpretive tool between mathematical equations and human decision-making. High-dimensional SHAP matrices and counterfactuals are precise mathematically speaking, yet overwhelming and confusing to a security specialist under the circumstances of an active attack.
+
+Such an LLM-powered interface would be capable of processing the complex math results and transforming them into clear instructions that can be acted upon by the relevant security operators. For example, the output could read: “The flow circumvented the initial filter due to masking of the entropy; write a Snort rule to alert any UDP packets traveling through Port 5000 with entropy above 7.2 bits.” The output essentially achieves a complete automation of the process of signature generation for threats—whether it is a Snort, Suricata, or Yara signature—based on the deep learning model’s inner workings. It would truly mean a seamless integration of human effort and artificial intelligence, which would enable global cybersecurity to keep up with the 6G requirements \cite{mdpi2025industry5}.
+
+    % ==========================================
+    % SECTION 8: CONCLUSION
+    % ==========================================
+    \section{Conclusion}
+    
+    This comprehensive and highly expanded research project has thoroughly examined the necessity for deeply embedding XAI into the very fabric of deep learning intrusion detection systems for the massive IoT system of systems. The literature review, architecture investigation, mathematical deconstruction, and application examination prove without a doubt that in today’s cyber warfare world, where a few lines of code could bring down an entire city, algorithmic accuracy alone, regardless of how high it might be, is entirely useless unless it goes hand in hand with algorithmic accountability.
+    
+    	An “algorithm in a black box” which can detect even the most sophisticated attack carried out by a nation-state, but cannot explain itself to human analysts, would be entirely inappropriate for implementation in any mission-critical infrastructure, in healthcare applications, and in the smart city environments.
+
+    In suggesting an extremely modular, scalable, and layered architecture that successfully integrates a powerful 1D-CNN and BiLSTM-based detection system together with simultaneous multiple-granularity SHAP and LIME-based explanation systems, this paper offers an irrefutable blueprint for the creation of the future of network defense solutions with full transparency. With the innovative use of unsupervised Variational Autoencoders for detecting unknown threats along with mathematical reconstruction scoring, such architecture is guaranteed to be highly responsive to novel attack vectors and at the same time deliver readable explanations for the raised anomalies.
+        
+        From all discussed above, it becomes clear that the only possible way to deal with the problem of alert fatigue, which is extremely dangerous for security, lies in offering mathematicaly sound and readable explanations for raised alerts to security operations center staff. This is also the only possibility to guarantee proper regulatory compliance, for instance, with respect to the EU AI Act, as well as not misuse the algorithm false positives.
+
+    In summary, the above insights highlight a paradigmatic shift towards a basic philosophy: explainability and precision are not contradictory concepts; instead, they are inherently intertwined elements of robust cybersecurity in the present day. Precision alone leads to distrust, and explainability alone is vulnerable. Given the undeniable reality that IoTs are destined to grow to include hundreds of billions of interrelated devices and evolve into decentralized federations that implement quantum-proof cryptographic methodologies, ensuring that one constructs a system that can be questioned, verified through mathematics, and implicitly trusted becomes an essential task going forward.
+
+    % ==========================================
+    % REFERENCES
+    % ==========================================
+    \newpage
+    \bibliographystyle{plain}
+    \bibliography{references}
 
 \end{document}
-
